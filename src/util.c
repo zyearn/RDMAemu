@@ -1,3 +1,9 @@
+
+/*
+ * Copyright (C) Zhu Jiashun
+ * Copyright (C) RDMAemu
+ */
+
 #include "util.h"
 
 int open_listenfd(int port) 
@@ -83,10 +89,6 @@ int read_conf(char *filename, zv_conf_t *cf, char *buf, int len) {
         
         if (cur_pos[strlen(cur_pos) - 1] == '\n') {
             cur_pos[strlen(cur_pos) - 1] = '\0';
-        }
-
-        if (strncmp("root", cur_pos, 4) == 0) {
-            cf->root = delim_pos + 1;
         }
 
         if (strncmp("port", cur_pos, 4) == 0) {

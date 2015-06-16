@@ -1,3 +1,9 @@
+
+/*
+ * Copyright (C) Zhu Jiashun
+ * Copyright (C) RDMAemu
+ */
+
 #ifndef _ZV_LIST_H
 #define _ZV_LIST_H
 

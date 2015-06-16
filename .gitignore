@@ -1,0 +1,6 @@
+*.o
+*.tmp
+*.swp
+*_test
+objs
+tags

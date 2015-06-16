@@ -1,3 +1,9 @@
+
+/*
+ * Copyright (C) Zhu Jiashun
+ * Copyright (C) RDMAemu
+ */
+
 #ifndef _EPOLL_H
 #define _EPOLL_H
 

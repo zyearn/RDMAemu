@@ -1,3 +1,9 @@
+
+/*
+ * Copyright (C) Zhu Jiashun
+ * Copyright (C) RDMAemu
+ */
+
 #ifndef _UTIL_H
 #define _UTIL_H
 
@@ -24,7 +30,6 @@
 #define ZV_CONF_ERROR   100
 
 struct zv_conf_s {
-    void *root;
     int port;
     int thread_num;
 };

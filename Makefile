@@ -13,15 +13,15 @@ SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,objs/%.o,$(SOURCES))
 
 # for tests
-OBJECTS_WITHOUT_ZAVER=$(filter-out objs/src/zaver.o,$(OBJECTS))
+OBJECTS_WITHOUT_SERVER=$(filter-out objs/src/rdma_server.o,$(OBJECTS))
 
 TEST_SRC=$(wildcard tests/*_test.c)
 TESTS=$(patsubst %.c,%,$(TEST_SRC))
 
-TARGET=objs/zaver
+TARGET=objs/rdma_server
 
 all: $(TARGET) tests
-zaver: $(TARGET)
+rdma_server: $(TARGET)
 
 dev: CFLAGS=-g -Wall -Isrc -Wall -Wextra $(OPTFLAGS)
 dev: all
@@ -33,7 +33,7 @@ objs/%.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 tests/%: tests/%.c 
-	$(CC) $(CFLAGS) -o $@ $< $(OBJECTS_WITHOUT_ZAVER) $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $< $(OBJECTS_WITHOUT_SERVER) $(LIBS)
 
 build:
 	@mkdir -p objs/src

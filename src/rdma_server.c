@@ -1,19 +1,19 @@
 
 /*
  * Copyright (C) Zhu Jiashun
- * Copyright (C) Zaver
+ * Copyright (C) librdmaemu
  */
 
 #include <stdint.h>
 #include <getopt.h>
 #include <signal.h>
 #include <string.h>
+#include "rdma.h"
 #include "util.h"
-#include "http.h"
 #include "epoll.h"
 #include "threadpool.h"
 
-#define CONF "zaver.conf"
+#define CONF "rdma.conf"
 #define PROGRAM_VERSION "0.1"
 
 extern struct epoll_event *events;
@@ -29,7 +29,7 @@ static const struct option long_options[]=
 static void usage() {
    fprintf(stderr,
 	"zaver [option]... \n"
-	"  -c|--conf <config file>  Specify config file. Default ./zaver.conf.\n"
+	"  -c|--conf <config file>  Specify config file. Default ./rdma.conf.\n"
 	"  -?|-h|--help             This information.\n"
 	"  -V|--version             Display program version.\n"
 	);
@@ -118,8 +118,8 @@ int main(int argc, char* argv[]) {
     int epfd = zv_epoll_create(0);
     struct epoll_event event;
     
-    zv_http_request_t *request = (zv_http_request_t *)malloc(sizeof(zv_http_request_t));
-    zv_init_request_t(request, listenfd, &cf);
+    rdma_request_t *request = (rdma_request_t *)malloc(sizeof(rdma_request_t));
+    rdma_init_request_t(request, listenfd, &cf);
 
     event.data.ptr = (void *)request;
     event.events = EPOLLIN | EPOLLET;
@@ -130,6 +130,11 @@ int main(int argc, char* argv[]) {
     */
     zv_threadpool_t *tp = threadpool_init(cf.thread_num);
     
+    /*
+    init rdma
+    */
+    rdma_init();
+
     /* epoll_wait loop */
     while (1) {
         int n;
@@ -137,7 +142,7 @@ int main(int argc, char* argv[]) {
         
         int i, fd;
         for (i=0; i<n; i++) {
-            zv_http_request_t *r = (zv_http_request_t *)events[i].data.ptr;
+            rdma_request_t *r = (rdma_request_t *)events[i].data.ptr;
             fd = r->fd;
             
             if (listenfd == fd) {
@@ -160,13 +165,13 @@ int main(int argc, char* argv[]) {
                     check(rc == 0, "make_socket_non_blocking");
                     debug("new connection fd %d", infd);
                     
-                    zv_http_request_t *request = (zv_http_request_t *)malloc(sizeof(zv_http_request_t));
+                    rdma_request_t *request = (rdma_request_t *)malloc(sizeof(rdma_request_t));
                     if (request == NULL) {
-                        log_err("malloc(sizeof(zv_http_request_t))");
+                        log_err("malloc(sizeof(rdma_request_t))");
                         break;
                     }
+                    rdma_init_request_t(request, infd, &cf);
 
-                    zv_init_request_t(request, infd, &cf);
                     event.data.ptr = (void *)request;
                     event.events = EPOLLIN | EPOLLET;
 
@@ -182,10 +187,7 @@ int main(int argc, char* argv[]) {
                     close(fd);
                     continue;
                 }
-                /*
-                do_request(infd);
-                close(infd);
-                */
+
                 log_info("new task from fd %d", fd);
                 rc = threadpool_add(tp, do_request, events[i].data.ptr);
                 check(rc == 0, "threadpool_add");

@@ -1,3 +1,9 @@
+
+/*
+ * Copyright (C) Zhu Jiashun
+ * Copyright (C) RDMAemu
+ */
+
 #include "threadpool.h"
 
 typedef enum {
@@ -217,7 +223,7 @@ static void *threadpool_worker(void *arg) {
 
         (*(task->func))(task->arg);
         /* TODO: memory pool */
-        free(task);
+        //free(task);
     }
 
     pool->started--;
