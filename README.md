@@ -1,37 +1,22 @@
-Zaver
+libRDMAemu
 =====
 
-yet another fast and efficient HTTP server
+Visit memory region in another machine.
 
-## programming model
-
-* epoll
-* non-blocking I/O
-* thread-pool
-
-## compile and run
+## start up server
 
 ```
-make
-./objs/zaver -c zaver.conf
+cd RDMAemu && make
+./objs/rdma_server -c rdma.conf
 ```
 
-## support
+## client usage
 
-* HTTP persistent connection
-* browser cache
+```
+cd RDMAemu/client_example && make
+./example
+```
 
-## todo
+## NOTE
 
-* ~~add command line parameter~~
-* ~~add conf file~~
-* sendfile
-* dynamic content
-* other HTTP/1.1 features
-* memory pool
-* close socket when timeout
-
-## more details
-
-http://lifeofzjs.com/blog/2015/05/16/how-to-write-a-server/
-
+for now, you must configure IP and Port in RDMAemu/example.c
