@@ -102,7 +102,7 @@ int RDMA_get(void *ptr, int size, void *buffer) {
 	memset(buf, '\0', BUF_SIZE);
 
 	debug("p %p, d %d", ptr, size);
-	sprintf(buf, "GET %p %d\r\n\0", ptr, size);
+	sprintf(buf, "GET %p %d\r\n", ptr, size);
 	debug("get buf = %s", buf);
 
 	write(connfd, buf, strlen(buf));

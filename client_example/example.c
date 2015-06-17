@@ -4,7 +4,7 @@ int main(int argc, char *argv[]) {
 	int rc;
 
 	/* connect */
-    rc = RDMA_connect("192.168.1.102", 3000);
+    rc = RDMA_connect("192.168.1.105", 3000);
 	check(rc > 0, "RDMA_connect");
 	log_info("connect remote successfully!");
 
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
 	rc = RDMA_get(ptr, 12, buf);
 	check(rc == 0, "RDMA_GET");
 	log_info("RDMA_get successfully!");
-	log_info("the data we previously set is %s", buf[2]);	// the format is "Y <data>"
+	log_info("the data we previously set is %s", &buf[2]);	// the format is "Y <data>"
 
 	return 0;
 }
