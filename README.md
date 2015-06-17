@@ -12,11 +12,10 @@ cd RDMAemu && make
 
 ## client usage
 
+Before compiling client program, you must configure IP and Port in RDMAemu/example.c
+
 ```
 cd RDMAemu/client_example && make
 ./example
 ```
 
-## NOTE
-
-for now, you must configure IP and Port in RDMAemu/example.c
